@@ -19,7 +19,7 @@ BP 92208 - Cedex 03
 
 ### IMT Atlantique 
 ```
-Bureau 222 				
+Bureau B-222 				
 Tel. +33 2 5185 8216
 Automation, Production and Computer Sciences Dept.
 4 rue Alfred Kastler 
