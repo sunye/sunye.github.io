@@ -58,7 +58,7 @@ public class MyClass {
 }
 ```
 
-Cette solution non seulement présente les mêmes inconvenants que la précédente, comme aussi en introduit un nouveau:
+Cette solution non seulement présente les mêmes inconvénients  que la précédente, comme aussi en introduit un nouveau:
 le client doit être au courant que cette méthode doit être appelée avant l'utilisation effective d'une instance de cette classe.
 
 ## Injection de dépendance
