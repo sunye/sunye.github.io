@@ -133,6 +133,17 @@ Lorsque le contexte initialise une instance de `MyClass`, grâce à la méthode 
 méthode `getTags()` de la classe `MyClassConfiguration`.
 On peut utiliser cette configuration également pour initialiser l'attribut avec une autre implémentation de `List` et même pour ajouter quelques valeurs à cette liste.
 
-## Code source
+### Code source
 
-Le code source de cet exemple est diponible sur le [GitLab](https://gitlab.univ-nantes.fr/sunye-g/exemples-spring/tree/master/dependency-injection) de l'Université de Nantes.
+Le code source de cet exemple est disponible sur le [GitLab](https://gitlab.univ-nantes.fr/sunye-g/exemples-spring/tree/master/dependency-injection) de l'Université de Nantes.
+
+## Conclusion
+
+Grâce à l'injection de dépendance, il est possible de séparer l'initialisation des attributs de son utilisation.
+Dans notre exemple, les conséquences sont les suivantes:
+
+1. La classe `MyClass` ne connaît pas la classe concrète que l'attribut `tags` utilise: elle ne dépend que de l'interface `List`.
+1. Les classes qui utilisent `MyClass` (les clientes) n'ont pas besoin de la configurer pour l'utiliser.
+1. La liaison entre l'attribut de type `List` et la classe concrète `LinkedList` est fait par une classe tiers de configuration.
+1. Lorsqu'on utilise Spring pour l'injection de dépendance, il est possible de remplacer la classe de configuration par un fichier XML. 
+
