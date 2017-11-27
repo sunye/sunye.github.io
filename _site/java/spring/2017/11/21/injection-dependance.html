@@ -112,13 +112,17 @@ Vous avez donc modifié votre code, pour essayer de ne dépendre que de l’inte
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>En effet, dans ce cas, modifier le type déclaré des champs, paramètres, variables, etc. est simple et réduit le couplage.
+<p>En effet, dans ce cas, modifier le type déclaré des champs, paramètres, variables, etc. est simple et réduit le couplage: 
+ces propriétés ne dépendront que de l’interface <code class="highlighter-rouge">List</code> et non de ses différentes implémentation.
 Cependant, lors de l’initialisation d’un champ ou d’une variable, vous ne pouvez faire autrement qu’utiliser la classe concrète:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span>  <span class="nf">MyClass</span><span class="o">()</span> <span class="o">{</span>
   <span class="n">tags</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
 <span class="o">}</span>
 </code></pre></div></div>
+
+<p>Cette unique utilisation de <code class="highlighter-rouge">ArrayList</code> empêche la classe <code class="highlighter-rouge">MyClass</code> d’être complètement indépendante des classes concrètes: elle continue de
+dépendre de l’interface <code class="highlighter-rouge">List</code> et de son implémentation.</p>
 
 <p>Une solution simple à ce problème, c’est d’instancier la liste d’éléments à l’extérieur de la classe et de la passer comme paramètre du constructeur:</p>
 
@@ -129,11 +133,14 @@ Cependant, lors de l’initialisation d’un champ ou d’une variable, vous ne 
   <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
-<p>Si cette solution résout partiellement le problème et peut améliorer la testabilité de la classe, elle rend son utilisation plus complexe:
+<p>Si cette solution résout partiellement le problème et peut améliorer la testabilité de la classe: les cas de test pourront la configurer de 
+l’extérieur et ensuite contrôler et observer son comportement, grâce aux doublures de test.</p>
+
+<p>Mais la solution rend l’utilisation de la classe plus complexe:
 tout client souhaitant l’utiliser devra d’abord instancier une liste et la passer comme argument.
 Et si plusieurs champs doivent être instanciés à l’extérieur de la classe, le code deviendra trop complexe.</p>
 
-<p>Une autre solution similaire et tout aussi partielle, consiste à utiliser une méthode pour l’initialiser la liste d’éléments:</p>
+<p>Une autre solution similaire et tout aussi partielle, consiste à utiliser une méthode pour initialiser la liste d’éléments:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClass</span> <span class="o">{</span>
   <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">tags</span><span class="o">;</span>
@@ -143,8 +150,28 @@ Et si plusieurs champs doivent être instanciés à l’extérieur de la classe,
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>Cette solution non seulement présente les mêmes inconvenants que la précédente, comme aussi en introduit un nouveau:
+<p>Cette solution non seulement présente les mêmes inconvénients  que la précédente, comme aussi en introduit un nouveau:
 le client doit être au courant que cette méthode doit être appelée avant l’utilisation effective d’une instance de cette classe.</p>
+
+<h2 id="le-pattern-factory-à-la-rescousse">Le pattern «Factory» à la rescousse</h2>
+
+<p>Une solution intéressante pour simplifier l’initialisation de la classe <code class="highlighter-rouge">MyClass</code> est apportée par les patrons de conception.
+En effet, le patron <em>Factory</em> permet de simplifier la création d’objets dont la configuration est complexe. 
+L’idée de ce pattern est d’utiliser une méthode de création d’une autre classe, appelée <em>Fabrique</em>.
+Une implémentation possible de la solution est listée ci-dessous:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClassFactory</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">MyClass</span> <span class="nf">createMyClass</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nf">MyClass</span><span class="o">(</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Ici, la fabrique se charge de configurer la classe <code class="highlighter-rouge">MyClass</code> lors de sa création. 
+<code class="highlighter-rouge">MyClass</code> devient enfin complètement indépendante de l’implémentation de la classe <code class="highlighter-rouge">List</code>.</p>
+
+<p>Une autre solution pour simplifier l’utilisation de MyClass consiste à utiliser l’injection de dépendance,
+qui nous permettra de nous passer des fabriques, tout en gardant les avantages.</p>
 
 <h2 id="injection-de-dépendance">Injection de dépendance</h2>
 
@@ -152,7 +179,7 @@ le client doit être au courant que cette méthode doit être appelée avant l�
 ou en d’autres termes, va se charger d’injecter automatiquement des dépendances vers des classes concrètes. 
 Il existe plusieurs mécanismes d’injection de dépendance. Un de plus connus et aussi le plus utilisé est <a href="https://spring.io">Spring</a>,
 mais d’autres mécanismes plus légers et récents sont aussi disponibles: <a href="https://github.com/google/guice">Google Guice</a>,
-<a href="http://square.github.io/dagger/">Dagger</a> ou <a href="http://picocontainer.com/">PicoContainer</a>.
+<a href="http://square.github.io/dagger/">Dagger</a>, <a href="http://picocontainer.com/">PicoContainer</a> ou <a href="http://weld.cdi-spec.org">Weld</a>.
 Dans nos exemples, nous utiliserons Spring.</p>
 
 <h3 id="spécification-du-point-dinjection">Spécification du point d’injection</h3>

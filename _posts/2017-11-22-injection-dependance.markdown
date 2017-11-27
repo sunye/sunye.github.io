@@ -24,7 +24,8 @@ public class MyClass {
 }
 ```
 
-En effet, dans ce cas, modifier le type déclaré des champs, paramètres, variables, etc. est simple et réduit le couplage.
+En effet, dans ce cas, modifier le type déclaré des champs, paramètres, variables, etc. est simple et réduit le couplage: 
+ces propriétés ne dépendront que de l'interface `List` et non de ses différentes implémentation.
 Cependant, lors de l'initialisation d'un champ ou d'une variable, vous ne pouvez faire autrement qu'utiliser la classe concrète:
 
 ```java
@@ -32,6 +33,9 @@ public  MyClass() {
   tags = new ArrayList<String>();
 }
 ```
+
+Cette unique utilisation de `ArrayList` empêche la classe `MyClass` d'être complètement indépendante des classes concrètes: elle continue de
+dépendre de l'interface `List` et de son implémentation.
 
 Une solution simple à ce problème, c'est d'instancier la liste d'éléments à l'extérieur de la classe et de la passer comme paramètre du constructeur:
 
@@ -43,11 +47,14 @@ public class MyClass {
   }
 }
 ```
-Si cette solution résout partiellement le problème et peut améliorer la testabilité de la classe, elle rend son utilisation plus complexe:
+Si cette solution résout partiellement le problème et peut améliorer la testabilité de la classe: les cas de test pourront la configurer de 
+l'extérieur et ensuite contrôler et observer son comportement, grâce aux doublures de test.
+
+Mais la solution rend l'utilisation de la classe plus complexe:
 tout client souhaitant l'utiliser devra d'abord instancier une liste et la passer comme argument.
 Et si plusieurs champs doivent être instanciés à l'extérieur de la classe, le code deviendra trop complexe.
 
-Une autre solution similaire et tout aussi partielle, consiste à utiliser une méthode pour l'initialiser la liste d'éléments:
+Une autre solution similaire et tout aussi partielle, consiste à utiliser une méthode pour initialiser la liste d'éléments:
 
 ```java
 public class MyClass {
@@ -61,13 +68,35 @@ public class MyClass {
 Cette solution non seulement présente les mêmes inconvénients  que la précédente, comme aussi en introduit un nouveau:
 le client doit être au courant que cette méthode doit être appelée avant l'utilisation effective d'une instance de cette classe.
 
+## Le pattern «Factory» à la rescousse
+
+Une solution intéressante pour simplifier l'initialisation de la classe `MyClass` est apportée par les patrons de conception.
+En effet, le patron _Factory_ permet de simplifier la création d'objets dont la configuration est complexe. 
+L'idée de ce pattern est d'utiliser une méthode de création d'une autre classe, appelée _Fabrique_.
+Une implémentation possible de la solution est listée ci-dessous:
+
+```java
+public class MyClassFactory {
+    public MyClass createMyClass() {
+      return new MyClass(new ArrayList());
+    }
+}
+```
+
+Ici, la fabrique se charge de configurer la classe `MyClass` lors de sa création. 
+`MyClass` devient enfin complètement indépendante de l'implémentation de la classe `List`.
+
+Une autre solution pour simplifier l'utilisation de MyClass consiste à utiliser l'injection de dépendance,
+qui nous permettra de nous passer des fabriques, tout en gardant les avantages.
+
+
 ## Injection de dépendance
 
 L'injection de dépendance consiste à faire appel à un mécanisme externe à la classe, qui va se charger d'initialiser ses attributs,
 ou en d'autres termes, va se charger d'injecter automatiquement des dépendances vers des classes concrètes. 
 Il existe plusieurs mécanismes d'injection de dépendance. Un de plus connus et aussi le plus utilisé est [Spring](https://spring.io),
 mais d'autres mécanismes plus légers et récents sont aussi disponibles: [Google Guice](https://github.com/google/guice),
-[Dagger](http://square.github.io/dagger/) ou [PicoContainer](http://picocontainer.com/).
+[Dagger](http://square.github.io/dagger/), [PicoContainer](http://picocontainer.com/) ou [Weld](http://weld.cdi-spec.org).
 Dans nos exemples, nous utiliserons Spring.
 
 
