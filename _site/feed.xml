@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-27T14:24:33+01:00</updated><id>http://localhost:4000/</id><title type="html">Gerson Sunyé</title><subtitle>Université de Nantes</subtitle><entry><title type="html">Injection de dépendance</title><link href="http://localhost:4000/java/spring/2017/11/21/injection-dependance.html" rel="alternate" type="text/html" title="Injection de dépendance" /><published>2017-11-21T13:52:25+01:00</published><updated>2017-11-21T13:52:25+01:00</updated><id>http://localhost:4000/java/spring/2017/11/21/injection-dependance</id><content type="html" xml:base="http://localhost:4000/java/spring/2017/11/21/injection-dependance.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-27T15:36:29+01:00</updated><id>http://localhost:4000/</id><title type="html">Gerson Sunyé</title><subtitle>Université de Nantes</subtitle><entry><title type="html">Injection de dépendance</title><link href="http://localhost:4000/java/spring/2017/11/21/injection-dependance.html" rel="alternate" type="text/html" title="Injection de dépendance" /><published>2017-11-21T13:52:25+01:00</published><updated>2017-11-21T13:52:25+01:00</updated><id>http://localhost:4000/java/spring/2017/11/21/injection-dependance</id><content type="html" xml:base="http://localhost:4000/java/spring/2017/11/21/injection-dependance.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Vous vous êtes déjà fait taper sur les doigts par votre instructeur de Java préféré lorsque vous avez déclaré une liste d’éléments de la façon suivante:&lt;/p&gt;
 
@@ -97,7 +97,7 @@ Voici un exemple de configuration Spring:&lt;/p&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Dans cette exemple, le type de retour de la méthode &lt;code class=&quot;highlighter-rouge&quot;&gt;getTags()&lt;/code&gt; fait de celle-ci la seule candidate pour initialiser la variable &lt;code class=&quot;highlighter-rouge&quot;&gt;tags&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Dans cet exemple, le type de retour de la méthode &lt;code class=&quot;highlighter-rouge&quot;&gt;getTags()&lt;/code&gt; fait de celle-ci la seule candidate pour initialiser la variable &lt;code class=&quot;highlighter-rouge&quot;&gt;tags&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Notez que cette configuration n’est pas spécifique à la classe &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass&lt;/code&gt;, elle peut servir à d’autres classes.&lt;/p&gt;
 
@@ -116,6 +116,18 @@ Voici un exemple de configuration Spring:&lt;/p&gt;
 méthode &lt;code class=&quot;highlighter-rouge&quot;&gt;getTags()&lt;/code&gt; de la classe &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClassConfiguration&lt;/code&gt;.
 On peut utiliser cette configuration également pour initialiser l’attribut avec une autre implémentation de &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt; et même pour ajouter quelques valeurs à cette liste.&lt;/p&gt;
 
-&lt;h2 id=&quot;code-source&quot;&gt;Code source&lt;/h2&gt;
+&lt;h3 id=&quot;code-source&quot;&gt;Code source&lt;/h3&gt;
 
-&lt;p&gt;Le code source de cet exemple est diponible sur le &lt;a href=&quot;https://gitlab.univ-nantes.fr/sunye-g/exemples-spring/tree/master/dependency-injection&quot;&gt;GitLab&lt;/a&gt; de l’Université de Nantes.&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
+&lt;p&gt;Le code source de cet exemple est disponible sur le &lt;a href=&quot;https://gitlab.univ-nantes.fr/sunye-g/exemples-spring/tree/master/dependency-injection&quot;&gt;GitLab&lt;/a&gt; de l’Université de Nantes.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Grâce à l’injection de dépendance, il est possible de séparer l’initialisation des attributs de leur utilisation.
+Dans notre exemple, les conséquences sont les suivantes:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;La classe &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass&lt;/code&gt; ne connaît pas la classe concrète que l’attribut &lt;code class=&quot;highlighter-rouge&quot;&gt;tags&lt;/code&gt; utilise: elle ne dépend que de l’interface &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Les classes qui utilisent &lt;code class=&quot;highlighter-rouge&quot;&gt;MyClass&lt;/code&gt; (les clientes) n’ont pas besoin de la configurer pour l’utiliser.&lt;/li&gt;
+  &lt;li&gt;La liaison entre l’attribut de type &lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt; et la classe concrète &lt;code class=&quot;highlighter-rouge&quot;&gt;LinkedList&lt;/code&gt; est fait par une classe tiers de configuration.&lt;/li&gt;
+  &lt;li&gt;Lorsqu’on utilise Spring pour l’injection de dépendance, il est possible de remplacer la classe de configuration par un fichier XML.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>

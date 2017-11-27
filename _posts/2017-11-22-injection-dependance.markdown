@@ -113,7 +113,7 @@ public class MyClassConfiguration {
 }
 ```
 
-Dans cette exemple, le type de retour de la méthode `getTags()` fait de celle-ci la seule candidate pour initialiser la variable `tags`.
+Dans cet exemple, le type de retour de la méthode `getTags()` fait de celle-ci la seule candidate pour initialiser la variable `tags`.
 
 Notez que cette configuration n'est pas spécifique à la classe `MyClass`, elle peut servir à d'autres classes. 
 
@@ -139,7 +139,7 @@ Le code source de cet exemple est disponible sur le [GitLab](https://gitlab.univ
 
 ## Conclusion
 
-Grâce à l'injection de dépendance, il est possible de séparer l'initialisation des attributs de son utilisation.
+Grâce à l'injection de dépendance, il est possible de séparer l'initialisation des attributs de leur utilisation.
 Dans notre exemple, les conséquences sont les suivantes:
 
 1. La classe `MyClass` ne connaît pas la classe concrète que l'attribut `tags` utilise: elle ne dépend que de l'interface `List`.

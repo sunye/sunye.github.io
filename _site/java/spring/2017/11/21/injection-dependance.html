@@ -194,7 +194,7 @@ Voici un exemple de configuration Spring:</p>
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>Dans cette exemple, le type de retour de la méthode <code class="highlighter-rouge">getTags()</code> fait de celle-ci la seule candidate pour initialiser la variable <code class="highlighter-rouge">tags</code>.</p>
+<p>Dans cet exemple, le type de retour de la méthode <code class="highlighter-rouge">getTags()</code> fait de celle-ci la seule candidate pour initialiser la variable <code class="highlighter-rouge">tags</code>.</p>
 
 <p>Notez que cette configuration n’est pas spécifique à la classe <code class="highlighter-rouge">MyClass</code>, elle peut servir à d’autres classes.</p>
 
@@ -213,9 +213,22 @@ Voici un exemple de configuration Spring:</p>
 méthode <code class="highlighter-rouge">getTags()</code> de la classe <code class="highlighter-rouge">MyClassConfiguration</code>.
 On peut utiliser cette configuration également pour initialiser l’attribut avec une autre implémentation de <code class="highlighter-rouge">List</code> et même pour ajouter quelques valeurs à cette liste.</p>
 
-<h2 id="code-source">Code source</h2>
+<h3 id="code-source">Code source</h3>
 
-<p>Le code source de cet exemple est diponible sur le <a href="https://gitlab.univ-nantes.fr/sunye-g/exemples-spring/tree/master/dependency-injection">GitLab</a> de l’Université de Nantes.</p>
+<p>Le code source de cet exemple est disponible sur le <a href="https://gitlab.univ-nantes.fr/sunye-g/exemples-spring/tree/master/dependency-injection">GitLab</a> de l’Université de Nantes.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Grâce à l’injection de dépendance, il est possible de séparer l’initialisation des attributs de leur utilisation.
+Dans notre exemple, les conséquences sont les suivantes:</p>
+
+<ol>
+  <li>La classe <code class="highlighter-rouge">MyClass</code> ne connaît pas la classe concrète que l’attribut <code class="highlighter-rouge">tags</code> utilise: elle ne dépend que de l’interface <code class="highlighter-rouge">List</code>.</li>
+  <li>Les classes qui utilisent <code class="highlighter-rouge">MyClass</code> (les clientes) n’ont pas besoin de la configurer pour l’utiliser.</li>
+  <li>La liaison entre l’attribut de type <code class="highlighter-rouge">List</code> et la classe concrète <code class="highlighter-rouge">LinkedList</code> est fait par une classe tiers de configuration.</li>
+  <li>Lorsqu’on utilise Spring pour l’injection de dépendance, il est possible de remplacer la classe de configuration par un fichier XML.</li>
+</ol>
+
 
   </div>
 
