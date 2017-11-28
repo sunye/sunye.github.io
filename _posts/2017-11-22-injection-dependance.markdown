@@ -72,8 +72,12 @@ le client doit être au courant que cette méthode doit être appelée avant l'u
 
 Une solution intéressante pour simplifier l'initialisation de la classe `MyClass` est apportée par les patrons de conception.
 En effet, le patron _Factory_ permet de simplifier la création d'objets dont la configuration est complexe. 
-L'idée de ce pattern est d'utiliser une méthode de création d'une autre classe, appelée _Fabrique_.
+L'idée de ce pattern est d'utiliser une autre classe ayant pour seul objectif la création d'objects dont elle est responsable 
+pour les fournir prêt-à-servir; la classe concrète utilisée n'étant pas connue par l'appelant.
+
 Une implémentation possible de la solution est listée ci-dessous:
+
+
 
 ```java
 public class MyClassFactory {
@@ -113,8 +117,8 @@ Tout d'abord, nous allons utiliser une des annotations définies par la [JSR-330
 import javax.inject.Inject;
 
 public class MyClass {
-  @Inject
-  private List<String> tags;
+    @Inject
+    private List<String> tags;
 }
 ```
 
@@ -136,13 +140,13 @@ public class MyClassConfiguration {
     }
 
     @Bean
-    public List<String> getTags() {
+    public List<String> produceList() {
         return new LinkedList<String>();
     }
 }
 ```
 
-Dans cet exemple, le type de retour de la méthode `getTags()` fait de celle-ci la seule candidate pour initialiser la variable `tags`.
+Dans cet exemple, le type de retour de la méthode `produceList()` fait de celle-ci la seule candidate pour initialiser la variable `tags`.
 
 Notez que cette configuration n'est pas spécifique à la classe `MyClass`, elle peut servir à d'autres classes. 
 
@@ -159,7 +163,11 @@ public static void main(String[] args) {
 ```
 
 Lorsque le contexte initialise une instance de `MyClass`, grâce à la méthode `getBean()`, il initialisera automatiquement l'attribut `tags` grâce à la
-méthode `getTags()` de la classe `MyClassConfiguration`.
+méthode `produceList()` de la classe `MyClassConfiguration`.
+Ici, le nom de la méthode n'est pas important, ce qui compte c'est le type de retour. Ainsi, pour initialiser un attribut de la classe `List`,
+Spring cherchera les méthodes de création (`@Bean`) dont le type de retour est compatible avec `List`.
+
+
 On peut utiliser cette configuration également pour initialiser l'attribut avec une autre implémentation de `List` et même pour ajouter quelques valeurs à cette liste.
 
 ### Code source
