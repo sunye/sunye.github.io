@@ -157,8 +157,10 @@ le client doit être au courant que cette méthode doit être appelée avant l�
 
 <p>Une solution intéressante pour simplifier l’initialisation de la classe <code class="highlighter-rouge">MyClass</code> est apportée par les patrons de conception.
 En effet, le patron <em>Factory</em> permet de simplifier la création d’objets dont la configuration est complexe. 
-L’idée de ce pattern est d’utiliser une méthode de création d’une autre classe, appelée <em>Fabrique</em>.
-Une implémentation possible de la solution est listée ci-dessous:</p>
+L’idée de ce pattern est d’utiliser une autre classe ayant pour seul objectif la création d’objects dont elle est responsable 
+pour les fournir prêt-à-servir; la classe concrète utilisée n’étant pas connue par l’appelant.</p>
+
+<p>Une implémentation possible de la solution est listée ci-dessous:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClassFactory</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="n">MyClass</span> <span class="nf">createMyClass</span><span class="o">()</span> <span class="o">{</span>
@@ -193,8 +195,8 @@ Tout d’abord, nous allons utiliser une des annotations définies par la <a hre
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">javax.inject.Inject</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClass</span> <span class="o">{</span>
-  <span class="nd">@Inject</span>
-  <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">tags</span><span class="o">;</span>
+    <span class="nd">@Inject</span>
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">tags</span><span class="o">;</span>
 <span class="o">}</span>
 </code></pre></div></div>
 
@@ -207,7 +209,7 @@ Dans le cas de Spring, la configuration devra spécifier une méthode compatible
 Voici un exemple de configuration Spring:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Configuration</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClassConfiguration</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyConfiguration</span> <span class="o">{</span>
 
     <span class="nd">@Bean</span>
     <span class="kd">public</span> <span class="n">MyClass</span> <span class="nf">myClass</span><span class="o">()</span> <span class="o">{</span>
@@ -215,13 +217,13 @@ Voici un exemple de configuration Spring:</p>
     <span class="o">}</span>
 
     <span class="nd">@Bean</span>
-    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">getTags</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">produceList</span><span class="o">()</span> <span class="o">{</span>
         <span class="k">return</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>Dans cet exemple, le type de retour de la méthode <code class="highlighter-rouge">getTags()</code> fait de celle-ci la seule candidate pour initialiser la variable <code class="highlighter-rouge">tags</code>.</p>
+<p>Dans cet exemple, le type de retour de la méthode <code class="highlighter-rouge">produceList()</code> fait de celle-ci la seule candidate pour initialiser la variable <code class="highlighter-rouge">tags</code>.</p>
 
 <p>Notez que cette configuration n’est pas spécifique à la classe <code class="highlighter-rouge">MyClass</code>, elle peut servir à d’autres classes.</p>
 
@@ -231,18 +233,21 @@ Voici un exemple de configuration Spring:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
 
-    <span class="n">ApplicationContext</span> <span class="n">ctx</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AnnotationConfigApplicationContext</span><span class="o">(</span><span class="n">MyClassConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">ApplicationContext</span> <span class="n">ctx</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AnnotationConfigApplicationContext</span><span class="o">(</span><span class="n">MyConfiguration</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
     <span class="n">MyClass</span> <span class="n">mine</span> <span class="o">=</span> <span class="o">(</span><span class="n">MyClass</span><span class="o">)</span> <span class="n">ctx</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="n">MyClass</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre></div></div>
 
 <p>Lorsque le contexte initialise une instance de <code class="highlighter-rouge">MyClass</code>, grâce à la méthode <code class="highlighter-rouge">getBean()</code>, il initialisera automatiquement l’attribut <code class="highlighter-rouge">tags</code> grâce à la
-méthode <code class="highlighter-rouge">getTags()</code> de la classe <code class="highlighter-rouge">MyClassConfiguration</code>.
-On peut utiliser cette configuration également pour initialiser l’attribut avec une autre implémentation de <code class="highlighter-rouge">List</code> et même pour ajouter quelques valeurs à cette liste.</p>
+méthode <code class="highlighter-rouge">produceList()</code> de la classe <code class="highlighter-rouge">MyConfiguration</code>.
+Ici, le nom de la méthode n’est pas important, ce qui compte c’est le type de retour. Ainsi, pour initialiser un attribut de la classe <code class="highlighter-rouge">List</code>,
+Spring cherchera les méthodes de création (<code class="highlighter-rouge">@Bean</code>) dont le type de retour est compatible avec <code class="highlighter-rouge">List</code>.</p>
+
+<p>On peut utiliser cette configuration également pour initialiser l’attribut avec une autre implémentation de <code class="highlighter-rouge">List</code> et même pour ajouter quelques valeurs à cette liste.</p>
 
 <h3 id="code-source">Code source</h3>
 
-<p>Le code source de cet exemple est disponible sur le <a href="https://gitlab.univ-nantes.fr/sunye-g/exemples-spring/tree/master/dependency-injection">GitLab</a> de l’Université de Nantes.</p>
+<p>Le code source de cet exemple est disponible sur le <a href="https://gitlab.univ-nantes.fr/sunye-g/exemples-blog/tree/master/dependency-injection">GitLab</a> de l’Université de Nantes.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 

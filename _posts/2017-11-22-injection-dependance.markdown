@@ -132,7 +132,7 @@ Voici un exemple de configuration Spring:
 
 ```java
 @Configuration
-public class MyClassConfiguration {
+public class MyConfiguration {
 
     @Bean
     public MyClass myClass() {
@@ -157,13 +157,13 @@ L'utilisation de la classe `MyClass` doit passer par un _Contexte_, qui utiliser
 ```java
 public static void main(String[] args) {
 
-    ApplicationContext ctx = new AnnotationConfigApplicationContext(MyClassConfiguration.class);
+    ApplicationContext ctx = new AnnotationConfigApplicationContext(MyConfiguration.class);
     MyClass mine = (MyClass) ctx.getBean(MyClass.class);
 }
 ```
 
 Lorsque le contexte initialise une instance de `MyClass`, grâce à la méthode `getBean()`, il initialisera automatiquement l'attribut `tags` grâce à la
-méthode `produceList()` de la classe `MyClassConfiguration`.
+méthode `produceList()` de la classe `MyConfiguration`.
 Ici, le nom de la méthode n'est pas important, ce qui compte c'est le type de retour. Ainsi, pour initialiser un attribut de la classe `List`,
 Spring cherchera les méthodes de création (`@Bean`) dont le type de retour est compatible avec `List`.
 
@@ -172,7 +172,7 @@ On peut utiliser cette configuration également pour initialiser l'attribut avec
 
 ### Code source
 
-Le code source de cet exemple est disponible sur le [GitLab](https://gitlab.univ-nantes.fr/sunye-g/exemples-spring/tree/master/dependency-injection) de l'Université de Nantes.
+Le code source de cet exemple est disponible sur le [GitLab](https://gitlab.univ-nantes.fr/sunye-g/exemples-blog/tree/master/dependency-injection) de l'Université de Nantes.
 
 ## Conclusion
 
