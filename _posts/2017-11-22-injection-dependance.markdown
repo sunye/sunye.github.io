@@ -172,7 +172,7 @@ On peut utiliser cette configuration également pour initialiser l'attribut avec
 
 ### Code source
 
-Le code source de cet exemple est disponible sur le [GitLab](https://gitlab.univ-nantes.fr/sunye-g/exemples-blog/tree/master/dependency-injection) de l'Université de Nantes.
+Le code source de cet exemple est disponible sur le [GitHub](https://github.com/sunye/blog-examples/tree/master/dependency-injection).
 
 ## Conclusion
 

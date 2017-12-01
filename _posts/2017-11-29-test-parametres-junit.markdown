@@ -69,6 +69,8 @@ JUnit exécutera cette méthode 5 fois, une pour chaque donnée de test.
 
 Notez que l'annotation `@DisplayName` permet de spécifier un nom lisible à la méthode de test.
 Notez aussi l'utilisation de [AssertJ](http://joel-costigliola.github.io/assertj/index.html), une des bibliothèques compatibles avec JUnit qui simplifier l'écriture d'assertions.
+[Hamcrest](http://hamcrest.org) et [Truth](http://google.github.io/truth/) sont aussi compatibles avec JUnit.
+
 
 Nous utilisons ces mêmes annotations pour écrire deux autres méthodes de test pour les années inhabituelles:
 
@@ -155,7 +157,7 @@ Son comportement est simple: elle attend qu'une exception du type passé en prem
 
 ## Code source
 
-Le code source de cet exemple est disponible sur le [GitLab](https://gitlab.univ-nantes.fr/sunye-g/exemples-blog/tree/master/parameterized-tests) de l'Université de Nantes.
+Le code source de cet exemple est disponible sur le [GitHub](https://github.com/sunye/blog-examples/tree/master/parameterized-tests).
 
 ## Conclusion
 
