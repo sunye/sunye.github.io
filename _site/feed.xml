@@ -1,4 +1,251 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-11-30T23:04:47+01:00</updated><id>http://localhost:4000/</id><title type="html">Gerson Sunyé</title><subtitle>Université de Nantes</subtitle><entry><title type="html">Tests paramétrés en JUnit 5</title><link href="http://localhost:4000/java/junit/2017/11/29/test-parametres-junit.html" rel="alternate" type="text/html" title="Tests paramétrés en JUnit 5" /><published>2017-11-29T11:00:00+01:00</published><updated>2017-11-29T11:00:00+01:00</updated><id>http://localhost:4000/java/junit/2017/11/29/test-parametres-junit</id><content type="html" xml:base="http://localhost:4000/java/junit/2017/11/29/test-parametres-junit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-17T11:59:09+01:00</updated><id>http://localhost:4000/</id><title type="html">Gerson Sunyé</title><subtitle>Université de Nantes</subtitle><entry><title type="html">Analyse de la mutation avec PIT</title><link href="http://localhost:4000/java/pit/2017/12/15/analyse-mutation.html" rel="alternate" type="text/html" title="Analyse de la mutation avec PIT" /><published>2017-12-15T11:00:00+01:00</published><updated>2017-12-15T11:00:00+01:00</updated><id>http://localhost:4000/java/pit/2017/12/15/analyse-mutation</id><content type="html" xml:base="http://localhost:4000/java/pit/2017/12/15/analyse-mutation.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Vous vous rappelez de votre cours de physique où votre professeur a demandé à toute la classe la température d’ébullition de l’eau et que vous, 
+fier de votre culture vous avez répondu:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;– 100!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Et quand, sûr de vous,  vous attendiez les lauriers de la victoire et le regard admiratif de vos camarades, votre professeur a crié:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;– 100 quoi? Patates? Les unités de mesure, ventrebleu!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Tous vos camarades ont rit et vous avez rougi. 
+C’est à ce moment que vous avez commencé à éviter vos camarades, les gens en générale, et là, deux solutions s’offraient à vous: aller voir un psy ou devenir informaticien pour développer un programme qui ferait que plus personne n’oublierait les unités! Et ainsi, aucune sonde spatiale ne tomberait par votre faute&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. 
+Et vous vous êtes mis à développer votre propre classe &lt;code class=&quot;highlighter-rouge&quot;&gt;Mètre&lt;/code&gt; que vous comptez utiliser toute votre vie.&lt;/p&gt;
+
+&lt;h2 id=&quot;la-classe-mètre&quot;&gt;La classe «Mètre»&lt;/h2&gt;
+
+&lt;p&gt;Vous avez commencé à coder votre classe et avez ajouté une première méthode, &lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt;, qui permet l’addition de 2 distances.
+Bien que son comportement soit simple, cette méthode assure, par exemple, que personne ne pourra faire une addition entre une distance
+mesurée en mètres et une autre mesurée en yards:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Comme vous êtes soucieux de la qualité de votre code, vous avez écrit un test unitaire pour vérifier votre méthode,
+en utilisant le framework de tests &lt;a href=&quot;http://junit.org/&quot;&gt;JUnit&lt;/a&gt;, combiné avec des assertions &lt;a href=&quot;http://joel-costigliola.github.io/assertj/&quot;&gt;AssertJ&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testAdd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;assertThat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isEqualTo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Après avoir exécuté votre test avec succès, vous vous êtes posé une question:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;– Est-ce que mon test est suffisant ?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Votre premier réflexe a été de vous retourner vers la couverture de code et à des outils comme &lt;a href=&quot;http://cobertura.github.io/cobertura/&quot;&gt;Cobertura&lt;/a&gt; 
+ou &lt;a href=&quot;http://www.jacoco.org/jacoco/&quot;&gt;JaCoCo&lt;/a&gt;.
+Et le résultat était parfait: votre test couvre 100% des instruction (critères «tous-les-noeuds» et «tous-les-arcs»).
+C’est la réussite totale!&lt;/p&gt;
+
+&lt;p&gt;Mais votre esprit critique n’était pas satisfait de cette réponse. Car vous avez appris que couvrir 100% des instructions est une bonne chose,
+mais cela ne veut pas dire que votre test détecte toutes les erreurs pour autant. 
+Et que 1 seul test, avec 1 seule donnée de test vous paraît bien insuffisant.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;– Comment puis-je évaluer &lt;em&gt;vraiment&lt;/em&gt; la qualité de mes tests? vous êtes-vous demandé une après-midi pendant le goûter.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Et en regardant le «Blade Runner» Rick Deckard faire passer le test d’empathie &lt;a href=&quot;https://fr.wikipedia.org/wiki/Voight-Kampff&quot;&gt;Voight-Kampff&lt;/a&gt; pour détecter des &lt;em&gt;réplicants&lt;/em&gt;, vous vous êtes demandé: et pourquoi pas l’analyse de mutation?&lt;/p&gt;
+
+&lt;h2 id=&quot;analyse-de-mutation&quot;&gt;Analyse de mutation&lt;/h2&gt;
+
+&lt;p&gt;L’analyse de mutation est une technique de qualification de cas de tests, qui se base sur l’injection de fautes.
+Le principe est simple: on injecte des fautes dans le logiciel sous test et si les tests sont capables de détecter ces fautes, alors leur qualité est bonne.
+Et s’ils ne détectent pas ces erreurs, alors ils sont de mauvaise qualité.&lt;/p&gt;
+
+&lt;p&gt;Pour simplifier l’évaluation des cas de test et en même temps rendre difficile la détection d’erreurs, on injecte une faute à la fois. 
+On appelle «mutant» une copie du logiciel sous test à laquelle on a injecté une et une seule faute.&lt;/p&gt;
+
+&lt;p&gt;Le choix des fautes à injecter est crucial, car elle ne doivent pas être détectées facilement, mais en même temps, doivent être des vraies fautes.
+N’importe quel test peut détecter une erreur d’exécution, comme une division par zéro ou un index hors-plage, par exemple.&lt;/p&gt;
+
+&lt;p&gt;On appelle un «opérateur de mutation» une opération qui injecte une faute dans un programme.
+Il peut être simple, comme le remplacement d’un opérateur arithmétique &lt;code class=&quot;highlighter-rouge&quot;&gt;(+,-,*,/,..)&lt;/code&gt; par un autre. 
+Il y a aussi des opérateurs de mutation beaucoup plus complexes, comme l’ajout d’un champ (attribut) qui cacherait un champ hérité d’une super-classe.&lt;/p&gt;
+
+&lt;h2 id=&quot;les-mutants&quot;&gt;Les mutants&lt;/h2&gt;
+
+&lt;p&gt;Si l’on applique des opérateurs de mutation arithmétiques à la méthode &lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt;, on obtient (au moins) quatre mutants.
+Tout d’abord, le remplacement de l’addition par une soustraction:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Cyclope&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Ensuite, remplacement par une multiplication:&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Iceberg&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Et par une division:&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Mimic&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Et finalement, le remplacement de l’addition par l’opération modulo, le reste d’une division euclidienne:&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Polaris&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;other&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Notez que si jamais la méthode &lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt; contenait une deuxième opération d’addition, on obtiendrait 4 autres mutants, soit 8 au total.&lt;/p&gt;
+
+&lt;h2 id=&quot;à-la-chasse-des-mutants&quot;&gt;À la chasse des mutants&lt;/h2&gt;
+
+&lt;p&gt;Grâce à ces 4 mutants, on peut qualifier notre test &lt;code class=&quot;highlighter-rouge&quot;&gt;testAdd()&lt;/code&gt;.
+Plus précisément, on va tester chacun des mutants.
+Si le verdict de l’exécution est un «échec», le test a bien détecté le mutant.
+À l’opposé, si le verdict du test est un «succès», le test n’a pas été capable de détecter le mutant.&lt;/p&gt;
+
+&lt;p&gt;Lorsqu’on teste les quatre mutants, on obtient le résultat suivant:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Mutant&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Résultat évalué&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Résultat attendu&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Verdict&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;État du mutant&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;em&gt;Cyclope&lt;/em&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0m&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4m&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Échec&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Mort&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;em&gt;Iceberg&lt;/em&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4m&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4m&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Succès&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Vivant&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;em&gt;Mimic&lt;/em&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1m&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4m&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Échec&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Mort&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;em&gt;Polaris&lt;/em&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0m&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4m&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Échec&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Mort&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Le cas de test a été capable de détecter 3 mutants sur 4. 
+Il a été capable de tuer &lt;em&gt;Cyclope&lt;/em&gt;, &lt;em&gt;Mimic&lt;/em&gt; et &lt;em&gt;Polaris&lt;/em&gt;, mais &lt;em&gt;Iceberg&lt;/em&gt; reste vivant.
+On parle alors d’un «score de mutation» de 75%.&lt;/p&gt;
+
+&lt;p&gt;En d’autres termes, votre cas de test est bon, mais pas aussi bon que la couverture de code laissait croire.
+Vous aurez besoin d’un deuxième cas de test pour atteindre un score de mutation de 100%. 
+Par exemple, le test suivant vous permettra d’atteindre un score de mutation de 100%:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testAddBis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;assertThat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isEqualTo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Meter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;limites-de-lanalyse-de-mutation&quot;&gt;Limites de l’analyse de mutation&lt;/h2&gt;
+
+&lt;p&gt;Si les résultats de l’analyse de mutation sont plus pertinents que ceux de la couverture de code, son coût est bien plus important. 
+Le nombre important de mutants créés pour le logiciel sous test, combinés au temps d’exécution du jeu de tests peuvent rendre l’analyse de mutation impraticable.&lt;/p&gt;
+
+&lt;p&gt;De plus, l’analyse de mutation, tout comme la couverture de code, ne peut pas dire si un comportement absent (non mis en œuvre) est correctement testé.
+Par exemple, votre méthode &lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt; contient une erreur importante, elle ne gère pas le débordement d’entiers.
+Si le résultat de l’addition est supérieur au plus grand d’entier (&lt;code class=&quot;highlighter-rouge&quot;&gt;Integer.MAX_VALUE&lt;/code&gt;), Java rendra un nombre négatif.&lt;/p&gt;
+
+&lt;p&gt;Les techniques de &lt;a href=&quot;https://sunye.github.io/testing-courseware/#/5&quot;&gt;test fonctionnel&lt;/a&gt; et plus précisément le test aux limites, peuvent révéler cette erreur.&lt;/p&gt;
+
+&lt;h2 id=&quot;pit&quot;&gt;PIT&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://pitest.org&quot;&gt;PIT&lt;/a&gt; est un outil d’analyse de mutation capable de qualifier des suites de test écrites en JUnit. 
+Il a été développé par &lt;a href=&quot;https://github.com/hcoles&quot;&gt;Henry Coles&lt;/a&gt; et est distribué sous licence Apache 2.0.&lt;/p&gt;
+
+&lt;p&gt;Pour réduire le temps d’exécution et limiter le nombre de mutants générés, PIT combine l’analyse de mutation avec la couverture de code.
+Les opérateurs de mutation ne sont appliqués qu’au code couvert par les tests unitaires: PIT ne modifie pas le code qui n’est pas exécuté par les tests.
+Aussi, PIT n’exécute que les cas de test qui sensibilisent le code modifié.&lt;/p&gt;
+
+&lt;p&gt;Par exemple, votre test unitaire &lt;code class=&quot;highlighter-rouge&quot;&gt;testAdd()&lt;/code&gt; n’exécute que le code de la méthode &lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt;.
+Si PIT crée une centaine de mutants, dont seulement 4 concernent la méthode &lt;code class=&quot;highlighter-rouge&quot;&gt;add()&lt;/code&gt;, le test &lt;code class=&quot;highlighter-rouge&quot;&gt;testAdd()&lt;/code&gt; ne sera exécuté que 4 fois.&lt;/p&gt;
+
+&lt;p&gt;PIT s’intègre parfaitement à l’environnement de construction Maven-Gradle-JUnit.
+Pour l’utiliser, ajoutez la dépendance suivante à votre fichier &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.pitest&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;pitest&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.2.5&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;type&amp;gt;&lt;/span&gt;pom&lt;span class=&quot;nt&quot;&gt;&amp;lt;/type&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ensuite, ajoutez la configuration du plugin &lt;code class=&quot;highlighter-rouge&quot;&gt;pitest-maven&lt;/code&gt; à la phase «build» de Maven, 
+en spécifiant les paquetages Java qui seront modifiés par PIT:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.pitest&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;pitest-maven&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;nt&quot;&gt;&amp;lt;targetClasses&amp;gt;&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;&amp;lt;param&amp;gt;&lt;/span&gt;fr.unantes.info.units.*&lt;span class=&quot;nt&quot;&gt;&amp;lt;/param&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;nt&quot;&gt;&amp;lt;/targetClasses&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;nt&quot;&gt;&amp;lt;targetTests&amp;gt;&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;&amp;lt;param&amp;gt;&lt;/span&gt;fr.unantes.info.units.*&lt;span class=&quot;nt&quot;&gt;&amp;lt;/param&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;nt&quot;&gt;&amp;lt;/targetTests&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;executions&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;nt&quot;&gt;&amp;lt;execution&amp;gt;&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;&amp;lt;goals&amp;gt;&lt;/span&gt;
+             &lt;span class=&quot;nt&quot;&gt;&amp;lt;goal&amp;gt;&lt;/span&gt;mutationCoverage&lt;span class=&quot;nt&quot;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+         &lt;span class=&quot;nt&quot;&gt;&amp;lt;phase&amp;gt;&lt;/span&gt;pre-site&lt;span class=&quot;nt&quot;&gt;&amp;lt;/phase&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;nt&quot;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+ &lt;span class=&quot;nt&quot;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Lors que vous utilisez Maven pour créer les rapports de votre projet avec &lt;code class=&quot;highlighter-rouge&quot;&gt;mvn site&lt;/code&gt;, PIT crée un rapport contenant les résultats de l’analyse de mutation.&lt;/p&gt;
+
+&lt;h2 id=&quot;notes&quot;&gt;Notes&lt;/h2&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;Mars Climate Orbiter (1998) était une sonde qui s’est écrasée sur Mars en raison d’une &lt;a href=&quot;http://www.nirgal.net/mco_end.html&quot;&gt;erreur logicielle liée aux unités de mesure&lt;/a&gt;.&amp;nbsp;&lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Tests paramétrés en JUnit 5</title><link href="http://localhost:4000/java/junit/2017/11/29/test-parametres-junit.html" rel="alternate" type="text/html" title="Tests paramétrés en JUnit 5" /><published>2017-11-29T11:00:00+01:00</published><updated>2017-11-29T11:00:00+01:00</updated><id>http://localhost:4000/java/junit/2017/11/29/test-parametres-junit</id><content type="html" xml:base="http://localhost:4000/java/junit/2017/11/29/test-parametres-junit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Ernest Hemingway suggère que pour devenir un être humain accompli, une personne doit réaliser 4 tâches:
 1) Planter un arbre, 2) Combattre un taureau, 3) Écrire une nouvelle, 4) Élever un enfant
@@ -63,7 +310,8 @@ Dans ce cas, les méthodes doivent être ornées par l’annotation &lt;code cla
 JUnit exécutera cette méthode 5 fois, une pour chaque donnée de test.&lt;/p&gt;
 
 &lt;p&gt;Notez que l’annotation &lt;code class=&quot;highlighter-rouge&quot;&gt;@DisplayName&lt;/code&gt; permet de spécifier un nom lisible à la méthode de test.
-Notez aussi l’utilisation de &lt;a href=&quot;http://joel-costigliola.github.io/assertj/index.html&quot;&gt;AssertJ&lt;/a&gt;, une des bibliothèques compatibles avec JUnit qui simplifier l’écriture d’assertions.&lt;/p&gt;
+Notez aussi l’utilisation de &lt;a href=&quot;http://joel-costigliola.github.io/assertj/index.html&quot;&gt;AssertJ&lt;/a&gt;, une des bibliothèques compatibles avec JUnit qui simplifier l’écriture d’assertions.
+&lt;a href=&quot;http://hamcrest.org&quot;&gt;Hamcrest&lt;/a&gt; et &lt;a href=&quot;http://google.github.io/truth/&quot;&gt;Truth&lt;/a&gt; sont aussi compatibles avec JUnit.&lt;/p&gt;
 
 &lt;p&gt;Nous utilisons ces mêmes annotations pour écrire deux autres méthodes de test pour les années inhabituelles:&lt;/p&gt;
 
@@ -147,7 +395,7 @@ Son comportement est simple: elle attend qu’une exception du type passé en pr
 
 &lt;h2 id=&quot;code-source&quot;&gt;Code source&lt;/h2&gt;
 
-&lt;p&gt;Le code source de cet exemple est disponible sur le &lt;a href=&quot;https://gitlab.univ-nantes.fr/sunye-g/exemples-blog/tree/master/parameterized-tests&quot;&gt;GitLab&lt;/a&gt; de l’Université de Nantes.&lt;/p&gt;
+&lt;p&gt;Le code source de cet exemple est disponible sur le &lt;a href=&quot;https://github.com/sunye/blog-examples/tree/master/parameterized-tests&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
@@ -318,7 +566,7 @@ Spring cherchera les méthodes de création (&lt;code class=&quot;highlighter-ro
 
 &lt;h3 id=&quot;code-source&quot;&gt;Code source&lt;/h3&gt;
 
-&lt;p&gt;Le code source de cet exemple est disponible sur le &lt;a href=&quot;https://gitlab.univ-nantes.fr/sunye-g/exemples-blog/tree/master/dependency-injection&quot;&gt;GitLab&lt;/a&gt; de l’Université de Nantes.&lt;/p&gt;
+&lt;p&gt;Le code source de cet exemple est disponible sur le &lt;a href=&quot;https://github.com/sunye/blog-examples/tree/master/dependency-injection&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
