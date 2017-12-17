@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Analyse de la mutation avec PIT"
+title: "Analyse de mutation avec PIT"
 categories: Java PIT
 date:   2017-12-15 11:00:00 +0100
 ---
