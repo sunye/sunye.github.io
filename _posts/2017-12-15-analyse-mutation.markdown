@@ -52,7 +52,7 @@ Après avoir exécuté votre test avec succès, vous vous êtes posé une questi
 
 Votre premier réflexe a été de vous retourner vers la couverture de code et à des outils comme [Cobertura](http://cobertura.github.io/cobertura/) 
 ou [JaCoCo](http://www.jacoco.org/jacoco/).
-Et le résultat était parfait: votre test couvre 100% des instruction (critères «tous-les-noeuds» et «tous-les-arcs»).
+Et le résultat était parfait: votre test couvre 100% des instructions (critères «tous-les-noeuds» et «tous-les-arcs»).
 C'est la réussite totale!
 
 Mais votre esprit critique n'était pas satisfait de cette réponse. Car vous avez appris que couvrir 100% des instructions est une bonne chose,
@@ -72,7 +72,7 @@ Et s'ils ne détectent pas ces erreurs, alors ils sont de mauvaise qualité.
 Pour simplifier l'évaluation des cas de test et en même temps rendre difficile la détection d'erreurs, on injecte une faute à la fois. 
 On appelle «mutant» une copie du logiciel sous test à laquelle on a injecté une et une seule faute.
 
-Le choix des fautes à injecter est crucial, car elle ne doivent pas être détectées facilement, mais en même temps, doivent être des vraies fautes.
+Le choix des fautes à injecter est crucial, car elles ne doivent pas être détectées facilement, mais en même temps, doivent être des vraies fautes.
 N'importe quel test peut détecter une erreur d'exécution, comme une division par zéro ou un index hors-plage, par exemple.
 
 
@@ -115,7 +115,7 @@ public Meter add(Meter other) {
 
 Notez que si jamais la méthode `add()` contenait une deuxième opération d'addition, on obtiendrait 4 autres mutants, soit 8 au total.
 
-## À la chasse des mutants
+## À la chasse aux mutants
 
 Grâce à ces 4 mutants, on peut qualifier notre test `testAdd()`.
 Plus précisément, on va tester chacun des mutants.
@@ -135,7 +135,7 @@ Le cas de test a été capable de détecter 3 mutants sur 4.
 Il a été capable de tuer _Cyclope_, _Mimic_ et _Polaris_, mais _Iceberg_ reste vivant.
 On parle alors d'un «score de mutation» de 75%. 
 
-En d'autres termes, votre cas de test est bon, mais pas aussi bon que la couverture de code laissait croire.
+En d'autres termes, votre cas de test est bon, mais pas aussi bon que la couverture de code le laissait croire.
 Vous aurez besoin d'un deuxième cas de test pour atteindre un score de mutation de 100%. 
 Par exemple, le test suivant vous permettra d'atteindre un score de mutation de 100%:
 
@@ -151,7 +151,7 @@ void testAddBis() {
 ## Limites de l'analyse de mutation
 
 Si les résultats de l'analyse de mutation sont plus pertinents que ceux de la couverture de code, son coût est bien plus important. 
-Le nombre important de mutants créés pour le logiciel sous test, combinés au temps d'exécution du jeu de tests peuvent rendre l'analyse de mutation impraticable.
+Le nombre important de mutants créés pour le logiciel sous test, combinés au temps d'exécution du jeu de tests peuvent rendre l'analyse de mutation inapplicable.
 
 De plus, l'analyse de mutation, tout comme la couverture de code, ne peut pas dire si un comportement absent (non mis en œuvre) est correctement testé.
 Par exemple, votre méthode `add()` contient une erreur importante, elle ne gère pas le débordement d'entiers.
