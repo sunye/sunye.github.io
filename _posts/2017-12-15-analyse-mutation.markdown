@@ -17,7 +17,7 @@ Et quand, sûr de vous,  vous attendiez les lauriers de la victoire et le regard
 > -- 100 quoi? Patates? Les unités de mesure, ventrebleu!
 
 Tous vos camarades ont rit et vous avez rougi. 
-C'est à ce moment que vous avez commencé à éviter vos camarades, les gens en générale, et là, deux solutions s'offraient à vous: aller voir un psy ou devenir informaticien pour développer un programme qui ferait que plus personne n'oublierait les unités! Et ainsi, aucune sonde spatiale ne tomberait par votre faute[^1]. 
+C'est à ce moment que vous avez commencé à éviter vos camarades, les gens en général, et là, deux solutions s'offraient à vous: aller voir un psy ou devenir informaticien pour développer un programme qui ferait que plus personne n'oublierait les unités! Et ainsi, aucune sonde spatiale ne tomberait par votre faute[^1]. 
 Et vous vous êtes mis à développer votre propre classe `Mètre` que vous comptez utiliser toute votre vie. 
 
 ## La classe «Mètre»
