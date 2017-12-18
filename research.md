@@ -5,6 +5,10 @@ permalink: /research/
 ---
 
 
+## Habilitation à diriger des recherches
+  - [_A Model-Based Approach for Testing Large Scale Systems_](https://hal.inria.fr/tel-01255818/).
+    University of Nantes.
+    Defended on 10 November 2015.
 
 ## PhD Students
 
