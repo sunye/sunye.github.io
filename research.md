@@ -41,6 +41,6 @@ permalink: /research/
     Irisa, University of Rennes. Defended on 10 December 2013.  
     Co-advisor: Jean-Marc Jézéquel. 
 
-  - [**Eduardo Cunha de Almeida)**](http://www.inf.ufpr.br/eduardo/). _Test and validation of peer-to-peer systems_. 
+  - [**Eduardo Cunha de Almeida**](http://www.inf.ufpr.br/eduardo/). _Test and validation of peer-to-peer systems_. 
     Lina, University of Nantes. Defended on 25 February 2009. 
     Co-advisor: Patrick Valduriez. 
