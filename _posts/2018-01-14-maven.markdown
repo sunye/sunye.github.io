@@ -1,0 +1,225 @@
+---
+layout: post
+title:  "Premiers pas avec Maven"
+date:   2018-01-14 11:00:00 +0100
+categories: Java Maven
+---
+
+## Introduction 
+
+Après avoir développé avec succès une Calculatrice en Java et vous souhaitez partager votre succès rayonnant avec tout le monde. 
+Et vous ne souhaitez pas vous arrêter là, vous souhaitez aussi que d'autres développeurs participent à votre projet et contribuent à son amélioration. 
+
+Vous avez de la chance, la fondation Apache a créé [Maven](https://maven.apache.org), un outil de gestion de la construction de logiciels. 
+Maven vous aidera à compiler et tester votre logiciel, mais aussi à le distribuer et à le rendre simple à comprendre par d'autres développeurs. 
+
+*Note:* si vous utilisez les machines de l'Université de Nantes, vous devez configurer votre environnement avant d'utiliser Maven. [La configuration des machines du  CIE est décrite à la fin de ce document.](#maven-au-cie) 
+
+## Convention avant la configuration
+
+L'organisation d'un projet Maven respecte toujours la même convention: l'emplacement du code source, des tests, des resources, etc. est toujours le même. 
+Cette convention a deux conséquences:
+
+1. La prise en main d'un nouveau projet est plus simple: le nouveau développeur connaît d'emblée la structure du projet et ne perdra pas de temps à chercher l'emplacement des fichiers sources, des tests, etc.
+2. Il n'est pas nécessaire de configurer Maven avant de l'utiliser. Il trouvera tout seul le code source et les tests unitaires de votre projet.
+
+Les conventions proposées par Maven sont très complètes. En voici quelques exemples:
+
+Dossier | Contenu
+--|--
+`src/main/java` | Fichiers source Java
+`src/test/java` | Tests unitaires JUnit ou TestNG.
+`src/test/resources` | Resources utilisés pendant les tests.
+`target`        | Fichiers générés pendant la construction du logiciel.
+
+## Identification et création d'un projet
+
+Tout projet Maven possède un identifiant unique, composé de trois éléments: un identifiant de groupe, un identifiant de l'artefact et sa version. 
+Cet identifiant permet de créer des dépendances entre projets, qui sont gérées par Maven.
+Par exemple, si votre projet utilise JUnit, vous n'avez pas besoin de télécharger une archive Java et de l'ajouter au projet, mais simplement de déclarer que votre projet a besoin de JUnit, identifié par le groupe "junit", l'artefact "junit" et la version 4.12.
+
+Ainsi, avant de créer votre projet, vous devez l'identifier. 
+L'identifiant est souvent celui de l'organisation à laquelle vous appartenez.
+Par exemple, `fr.unantes`. Ensuite, l'identifiant de l'artefact est son nom, par exemple, `calculatrice`.
+
+Une fois que votre projet est identifié, vous pouvez le créer par la commande Unix suivante:
+
+```shell
+ mvn archetype:generate -DgroupId=fr.unantes -DartifactId=calculatrice -Dversion=1.0
+```
+
+Cette commande créera un dossier appelé `calculatrice`, contenant différents dossiers vides et un fichier XML de configuration et d'information du projet, nommé `pom.xml`, appelé couramment un fichier POM.
+Notez que cette commande spécifie aussi un «archétype», c'est à dire, la structure de projet à être construite. 
+L'archétype `generate` est un des plus simple et vous posera quelques questions durant la création.
+Le contenu de ce fichier doit ressembler à ceci:
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>fr.unantes</groupId>
+  <artifactId>calculatrice</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+  <name>calculatrice</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
+```
+Comme vous pouvez constater, ce fichier contient l'identifiant du projet, une propriété (le type d'encodage) et une seule dépendance, vers la version 3.8.1 de JUnit.
+
+Il existe d'autres moyens de créer un projet Maven, par exemple, directement dans Netbeans ou dans IntelliJ IDEA. 
+Il existe aussi d'autres archétypes, proposés par la fondation Apache ou par d'autres contributeurs. 
+
+Vous pouvez aussi modifier un projet existant et le transformer en projet Maven.
+Pour cela, il suffit de créer ou copier un fichier POM et de respecter la structure de dossiers de Maven. 
+
+## Dépendances
+
+Comme expliqué dans l'introduction, un projet Maven ne contient pas les archives Java des artéfacts qu'il utilise.
+Par exemple, la dépendance à Junit 3.8.1, ajouté par défaut dans le fichier POM, dit à Maven de télécharger l'archive dans un référentiel local. 
+Plus précisément, dans le dossier `~/.m2/repository/junit/junit/3.8.1/`.
+Cet artéfact n'est pas spécifique à votre projet, il peut être utilisé par d'autres projets Maven.
+Si vous souhaitez utiliser une version plus récente de JUnit, il suffit de mettre à jour cette dépendance:
+
+```xml
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+    <scope>test</scope>
+</dependency>
+```
+
+Maven se chargera de télécharger cette archive lorsqu'elle est nécessaire.
+Sauf si elle a déjà été téléchargée. En fait, avant de télécharger une dépendance, Maven vérifie si elle n'est pas présente dans le référentiel local et si c'est le cas, il ne la téléchargera pas une deuxième fois.
+
+Notez que la dépendance spécifie aussi la portée (scope) de l'artéfact. 
+Dans ce cas précis, il n'est utilisé que pendant les tests unitaires.
+En termes Java, il n'est pas ajouté à la variable `CLASSPATH` pendant la compilation, mais le sera pendant les tests unitaires.
+
+Si vous souhaitez utiliser d'autres artéfacts, il suffit de les ajouter au fichier POM.
+Si par exemple, si vous souhaitez utiliser les annotation proposées par la [JSR 308](http://www.oracle.com/technetwork/articles/java/ma14-architect-annotations-2177655.html), il suffit de chercher son identifiant (utilisez par exemple le site [MVNRepository](https://mvnrepository.com/)) et de l'ajouter au fichier POM:
+
+```xml
+<dependency>
+    <groupId>net.java.loci</groupId>
+    <artifactId>jsr308-all</artifactId>
+    <version>1.1.2</version>
+</dependency>
+```
+
+## Construction
+
+Comme dans tout outil de construction depuis plus de 40 ans (Make a été créé en 1977), la construction suit une séquence spécifique de phases. Par exemple, pour créer une archive Java, vous devez d'abord tester votre code.
+Et pour tester le code, vous devez d'abord le compiler.
+
+Maven n'échappe pas à la règle, la construction suit une séquence précise de phases, appelées [cycle de vie](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html).
+Au début, vous devez connaître 3 phases: 
+
+Phase | Description 
+--|-- 
+`compile` | Compile le code Java, après avoir téléchargé les dépendances nécessaires.
+`test`     | Exécute les tests unitaires du projet, après l'avoir compilé.
+`package` | Crée une archive Java du projet, après l'avoir testé.
+
+D'autres phases sont disponibles, par exemple pour nettoyer le dossier `target` ou générer le site web du projet. 
+
+## Configuration des plugins
+
+Chaque phase de construction (compilation, test, etc.) est associée à un plugin.
+Dans la plupart des cas, vous n'avez pas besoin de les configurer, les valeurs par défaut sont suffisantes et marchent dans la plupart des cas. 
+Dans les autres cas, il est possible de configurer précisément chaque plugin à l'intérieur du fichier POM.
+Par exemple, si vous souhaitez que votre code soit compilé par la version 9 de Java (en termes Java, `javac -source 1.9 -target 1.9`), vous pouvez ajouter les balises suivantes au fichier POM:
+
+```xml
+<project>
+  [...]
+  <build>
+    [...]
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>1.9</source>
+          <target>1.9</target>
+        </configuration>
+      </plugin>
+    </plugins>
+    [...]
+  </build>
+  [...]
+</project>
+```
+
+
+
+
+## Conclusion
+
+Né au sein du projet Jakarta de la fondation Apache, Maven est devenu un outil incontournable de construction automatique de projets Java, créant les bases de l'intégration continue.
+
+Actuellement, Maven a un concurrent de poids, [Gradle](https://gradle.org), dont le fichier de configuration utilise un format plus lisible que le XML des fichiers POM.
+Si Gradle n'est pas encore aussi populaire que Maven, il a le potentiel de le devenir.
+
+La bonne nouvelle c'est que Gradle respecte les conventions établies par Maven et sait utiliser les référentiels local et distant des projets Maven.
+On peut passer d'un projet Maven à un projet Gradle (et vice-versa) sans beaucoup d'effort. 
+
+
+
+
+## Maven au CIE
+
+La configuration du pare-feu de réseau de l'Université de Nantes pose quelques problèmes au fonctionnement de Maven.
+Le premier c'est que tout accès au réseau doit passer par le serveur proxy et Maven ne le sait pas.
+Pour le configurer, vous devez  créer un fichier appelé `settings.xml` dans le répertoire `~/.m2`:
+
+```
+touch ~/.m2/settings.xml
+vim ~/.m2/settings.xml
+```
+ 
+Ajoutez ensuite les lignes suivantes:
+
+```xml
+<settings>
+  <proxies>
+    <proxy>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>proxy.ensinfo.sciences.univ-nantes.prive</host>
+      <port>3128</port>
+    </proxy>
+  </proxies>
+</settings>
+```
+
+Ou alors, si vous préférez la manière simple, vous pouvez tout simplement copier  mon fichier de configuration:
+
+```shell
+cp ~sunye-g/.m2/settings.xml ~/.m2/
+```
+
+En complément, sur certaines machines, Maven n'arrive pas à retrouver son dossier d'installation et ne marche pas correctement.
+Dans ce cas, vous devez affecter la variable système `M2_HOME`:
+
+```shell
+export M2_HOME=/usr/local/opt/maven/
+```
+
+
+
+
