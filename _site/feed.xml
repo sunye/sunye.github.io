@@ -1,4 +1,231 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-12-18T14:38:07+01:00</updated><id>http://localhost:4000/</id><title type="html">Gerson Sunyé</title><subtitle>Université de Nantes</subtitle><entry><title type="html">Analyse de mutation avec PIT</title><link href="http://localhost:4000/java/pit/2017/12/15/analyse-mutation.html" rel="alternate" type="text/html" title="Analyse de mutation avec PIT" /><published>2017-12-15T11:00:00+01:00</published><updated>2017-12-15T11:00:00+01:00</updated><id>http://localhost:4000/java/pit/2017/12/15/analyse-mutation</id><content type="html" xml:base="http://localhost:4000/java/pit/2017/12/15/analyse-mutation.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-14T18:51:07+01:00</updated><id>http://localhost:4000/</id><title type="html">Gerson Sunyé</title><subtitle>Université de Nantes</subtitle><entry><title type="html">Premiers pas avec Maven</title><link href="http://localhost:4000/java/maven/2018/01/14/maven.html" rel="alternate" type="text/html" title="Premiers pas avec Maven" /><published>2018-01-14T11:00:00+01:00</published><updated>2018-01-14T11:00:00+01:00</updated><id>http://localhost:4000/java/maven/2018/01/14/maven</id><content type="html" xml:base="http://localhost:4000/java/maven/2018/01/14/maven.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Après avoir développé avec succès une Calculatrice en Java et vous souhaitez partager votre succès rayonnant avec tout le monde. 
+Et vous ne souhaitez pas vous arrêter là, vous souhaitez aussi que d’autres développeurs participent à votre projet et contribuent à son amélioration.&lt;/p&gt;
+
+&lt;p&gt;Vous avez de la chance, la fondation Apache a créé &lt;a href=&quot;https://maven.apache.org&quot;&gt;Maven&lt;/a&gt;, un outil de gestion de la construction de logiciels. 
+Maven vous aidera à compiler et tester votre logiciel, mais aussi à le distribuer et à le rendre simple à comprendre par d’autres développeurs.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; si vous utilisez les machines de l’Université de Nantes, vous devez configurer votre environnement avant d’utiliser Maven. &lt;a href=&quot;#maven-au-cie&quot;&gt;La configuration des machines du  CIE est décrite à la fin de ce document.&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;convention-avant-la-configuration&quot;&gt;Convention avant la configuration&lt;/h2&gt;
+
+&lt;p&gt;L’organisation d’un projet Maven respecte toujours la même convention: l’emplacement du code source, des tests, des resources, etc. est toujours le même. 
+Cette convention a deux conséquences:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;La prise en main d’un nouveau projet est plus simple: le nouveau développeur connaît d’emblée la structure du projet et ne perdra pas de temps à chercher l’emplacement des fichiers sources, des tests, etc.&lt;/li&gt;
+  &lt;li&gt;Il n’est pas nécessaire de configurer Maven avant de l’utiliser. Il trouvera tout seul le code source et les tests unitaires de votre projet.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Les conventions proposées par Maven sont très complètes. En voici quelques exemples:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Dossier&lt;/th&gt;
+      &lt;th&gt;Contenu&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/java&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Fichiers source Java&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;src/test/java&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Tests unitaires JUnit ou TestNG.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;src/test/resources&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Resources utilisés pendant les tests.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;target&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Fichiers générés pendant la construction du logiciel.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;identification-et-création-dun-projet&quot;&gt;Identification et création d’un projet&lt;/h2&gt;
+
+&lt;p&gt;Tout projet Maven possède un identifiant unique, composé de trois éléments: un identifiant de groupe, un identifiant de l’artefact et sa version. 
+Cet identifiant permet de créer des dépendances entre projets, qui sont gérées par Maven.
+Par exemple, si votre projet utilise JUnit, vous n’avez pas besoin de télécharger une archive Java et de l’ajouter au projet, mais simplement de déclarer que votre projet a besoin de JUnit, identifié par le groupe “junit”, l’artefact “junit” et la version 4.12.&lt;/p&gt;
+
+&lt;p&gt;Ainsi, avant de créer votre projet, vous devez l’identifier. 
+L’identifiant est souvent celui de l’organisation à laquelle vous appartenez.
+Par exemple, &lt;code class=&quot;highlighter-rouge&quot;&gt;fr.unantes&lt;/code&gt;. Ensuite, l’identifiant de l’artefact est son nom, par exemple, &lt;code class=&quot;highlighter-rouge&quot;&gt;calculatrice&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Une fois que votre projet est identifié, vous pouvez le créer par la commande Unix suivante:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; mvn archetype:generate &lt;span class=&quot;nt&quot;&gt;-DgroupId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;fr.unantes &lt;span class=&quot;nt&quot;&gt;-DartifactId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;calculatrice &lt;span class=&quot;nt&quot;&gt;-Dversion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Cette commande créera un dossier appelé &lt;code class=&quot;highlighter-rouge&quot;&gt;calculatrice&lt;/code&gt;, contenant différents dossiers vides et un fichier XML de configuration et d’information du projet, nommé &lt;code class=&quot;highlighter-rouge&quot;&gt;pom.xml&lt;/code&gt;, appelé couramment un fichier POM.
+Notez que cette commande spécifie aussi un «archétype», c’est à dire, la structure de projet à être construite. 
+L’archétype &lt;code class=&quot;highlighter-rouge&quot;&gt;generate&lt;/code&gt; est un des plus simple et vous posera quelques questions durant la création.
+Le contenu de ce fichier doit ressembler à ceci:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;project&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns:xsi=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;xsi:schemaLocation=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;modelVersion&amp;gt;&lt;/span&gt;4.0.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/modelVersion&amp;gt;&lt;/span&gt;
+
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;fr.unantes&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;calculatrice&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;packaging&amp;gt;&lt;/span&gt;jar&lt;span class=&quot;nt&quot;&gt;&amp;lt;/packaging&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;calculatrice&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;url&amp;gt;&lt;/span&gt;http://maven.apache.org&lt;span class=&quot;nt&quot;&gt;&amp;lt;/url&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;project.build.sourceEncoding&amp;gt;&lt;/span&gt;UTF-8&lt;span class=&quot;nt&quot;&gt;&amp;lt;/project.build.sourceEncoding&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;junit&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;junit&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;3.8.1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Comme vous pouvez constater, ce fichier contient l’identifiant du projet, une propriété (le type d’encodage) et une seule dépendance, vers la version 3.8.1 de JUnit.&lt;/p&gt;
+
+&lt;p&gt;Il existe d’autres moyens de créer un projet Maven, par exemple, directement dans Netbeans ou dans IntelliJ IDEA. 
+Il existe aussi d’autres archétypes, proposés par la fondation Apache ou par d’autres contributeurs.&lt;/p&gt;
+
+&lt;p&gt;Vous pouvez aussi modifier un projet existant et le transformer en projet Maven.
+Pour cela, il suffit de créer ou copier un fichier POM et de respecter la structure de dossiers de Maven.&lt;/p&gt;
+
+&lt;h2 id=&quot;dépendances&quot;&gt;Dépendances&lt;/h2&gt;
+
+&lt;p&gt;Comme expliqué dans l’introduction, un projet Maven ne contient pas les archives Java des artéfacts qu’il utilise.
+Par exemple, la dépendance à Junit 3.8.1, ajouté par défaut dans le fichier POM, dit à Maven de télécharger l’archive dans un référentiel local. 
+Plus précisément, dans le dossier &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.m2/repository/junit/junit/3.8.1/&lt;/code&gt;.
+Cet artéfact n’est pas spécifique à votre projet, il peut être utilisé par d’autres projets Maven.
+Si vous souhaitez utiliser une version plus récente de JUnit, il suffit de mettre à jour cette dépendance:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;junit&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;junit&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;4.12&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Maven se chargera de télécharger cette archive lorsqu’elle est nécessaire.
+Sauf si elle a déjà été téléchargée. En fait, avant de télécharger une dépendance, Maven vérifie si elle n’est pas présente dans le référentiel local et si c’est le cas, il ne la téléchargera pas une deuxième fois.&lt;/p&gt;
+
+&lt;p&gt;Notez que la dépendance spécifie aussi la portée (scope) de l’artéfact. 
+Dans ce cas précis, il n’est utilisé que pendant les tests unitaires.
+En termes Java, il n’est pas ajouté à la variable &lt;code class=&quot;highlighter-rouge&quot;&gt;CLASSPATH&lt;/code&gt; pendant la compilation, mais le sera pendant les tests unitaires.&lt;/p&gt;
+
+&lt;p&gt;Si vous souhaitez utiliser d’autres artéfacts, il suffit de les ajouter au fichier POM.
+Si par exemple, si vous souhaitez utiliser les annotation proposées par la &lt;a href=&quot;http://www.oracle.com/technetwork/articles/java/ma14-architect-annotations-2177655.html&quot;&gt;JSR 308&lt;/a&gt;, il suffit de chercher son identifiant (utilisez par exemple le site &lt;a href=&quot;https://mvnrepository.com/&quot;&gt;MVNRepository&lt;/a&gt;) et de l’ajouter au fichier POM:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;net.java.loci&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;jsr308-all&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;1.1.2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;construction&quot;&gt;Construction&lt;/h2&gt;
+
+&lt;p&gt;Comme dans tout outil de construction depuis plus de 40 ans (Make a été créé en 1977), la construction suit une séquence spécifique de phases. Par exemple, pour créer une archive Java, vous devez d’abord tester votre code.
+Et pour tester le code, vous devez d’abord le compiler.&lt;/p&gt;
+
+&lt;p&gt;Maven n’échappe pas à la règle, la construction suit une séquence précise de phases, appelées &lt;a href=&quot;https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html&quot;&gt;cycle de vie&lt;/a&gt;.
+Au début, vous devez connaître 3 phases:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Phase&lt;/th&gt;
+      &lt;th&gt;Description&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;compile&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Compile le code Java, après avoir téléchargé les dépendances nécessaires.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;test&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Exécute les tests unitaires du projet, après l’avoir compilé.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;package&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;Crée une archive Java du projet, après l’avoir testé.&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;D’autres phases sont disponibles, par exemple pour nettoyer le dossier &lt;code class=&quot;highlighter-rouge&quot;&gt;target&lt;/code&gt; ou générer le site web du projet.&lt;/p&gt;
+
+&lt;h2 id=&quot;configuration-des-plugins&quot;&gt;Configuration des plugins&lt;/h2&gt;
+
+&lt;p&gt;Chaque phase de construction (compilation, test, etc.) est associée à un plugin.
+Dans la plupart des cas, vous n’avez pas besoin de les configurer, les valeurs par défaut sont suffisantes et marchent dans la plupart des cas. 
+Dans les autres cas, il est possible de configurer précisément chaque plugin à l’intérieur du fichier POM.
+Par exemple, si vous souhaitez que votre code soit compilé par la version 9 de Java (en termes Java, &lt;code class=&quot;highlighter-rouge&quot;&gt;javac -source 1.9 -target 1.9&lt;/code&gt;), vous pouvez ajouter les balises suivantes au fichier POM:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;project&amp;gt;&lt;/span&gt;
+  [...]
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
+    [...]
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;maven-compiler-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;3.7.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;source&amp;gt;&lt;/span&gt;1.9&lt;span class=&quot;nt&quot;&gt;&amp;lt;/source&amp;gt;&lt;/span&gt;
+          &lt;span class=&quot;nt&quot;&gt;&amp;lt;target&amp;gt;&lt;/span&gt;1.9&lt;span class=&quot;nt&quot;&gt;&amp;lt;/target&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+    [...]
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+  [...]
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;maven-au-cie&quot;&gt;Maven au CIE&lt;/h2&gt;
+
+&lt;p&gt;La configuration du pare-feu de réseau de l’Université de Nantes pose quelques problèmes au fonctionnement de Maven.
+Le premier c’est que tout accès au réseau doit passer par le serveur proxy et Maven ne le sait pas.
+Pour le configurer, vous devez  créer un fichier appelé &lt;code class=&quot;highlighter-rouge&quot;&gt;settings.xml&lt;/code&gt; dans le répertoire &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.m2&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;touch ~/.m2/settings.xml
+vim ~/.m2/settings.xml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ajoutez ensuite les lignes suivantes:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;settings&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;proxies&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;proxy&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;active&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/active&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;protocol&amp;gt;&lt;/span&gt;http&lt;span class=&quot;nt&quot;&gt;&amp;lt;/protocol&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;host&amp;gt;&lt;/span&gt;proxy.ensinfo.sciences.univ-nantes.prive&lt;span class=&quot;nt&quot;&gt;&amp;lt;/host&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;port&amp;gt;&lt;/span&gt;3128&lt;span class=&quot;nt&quot;&gt;&amp;lt;/port&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/proxy&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/proxies&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/settings&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ou alors, si vous préférez la manière simple, vous pouvez tout simplement copier  mon fichier de configuration:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cp ~sunye-g/.m2/settings.xml ~/.m2/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;En complément, sur certaines machines, Maven n’arrive pas à retrouver son dossier d’installation et ne marche pas correctement.
+Dans ce cas, vous devez affecter la variable système &lt;code class=&quot;highlighter-rouge&quot;&gt;M2_HOME&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;M2_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/opt/maven/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Analyse de mutation avec PIT</title><link href="http://localhost:4000/java/pit/2017/12/15/analyse-mutation.html" rel="alternate" type="text/html" title="Analyse de mutation avec PIT" /><published>2017-12-15T11:00:00+01:00</published><updated>2017-12-15T11:00:00+01:00</updated><id>http://localhost:4000/java/pit/2017/12/15/analyse-mutation</id><content type="html" xml:base="http://localhost:4000/java/pit/2017/12/15/analyse-mutation.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Vous vous rappelez de votre cours de physique où votre professeur a demandé à toute la classe la température d’ébullition de l’eau et que vous, 
 fier de votre culture vous avez répondu:&lt;/p&gt;
@@ -14,7 +241,7 @@ fier de votre culture vous avez répondu:&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Tous vos camarades ont rit et vous avez rougi. 
-C’est à ce moment que vous avez commencé à éviter vos camarades, les gens en générale, et là, deux solutions s’offraient à vous: aller voir un psy ou devenir informaticien pour développer un programme qui ferait que plus personne n’oublierait les unités! Et ainsi, aucune sonde spatiale ne tomberait par votre faute&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. 
+C’est à ce moment que vous avez commencé à éviter vos camarades, les gens en général, et là, deux solutions s’offraient à vous: aller voir un psy ou devenir informaticien pour développer un programme qui ferait que plus personne n’oublierait les unités! Et ainsi, aucune sonde spatiale ne tomberait par votre faute&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. 
 Et vous vous êtes mis à développer votre propre classe &lt;code class=&quot;highlighter-rouge&quot;&gt;Mètre&lt;/code&gt; que vous comptez utiliser toute votre vie.&lt;/p&gt;
 
 &lt;h2 id=&quot;la-classe-mètre&quot;&gt;La classe «Mètre»&lt;/h2&gt;
