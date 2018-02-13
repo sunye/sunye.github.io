@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 
-I'm an assistant professor at the <a href="http://www.univ-nantes.fr">University of Nantes</a>, where I teach different topics related to Software Engineering.
+I'm an associate professor at the <a href="http://www.univ-nantes.fr">University of Nantes</a>, where I teach different topics related to Software Engineering.
 			
 Since 2015, I lead the <a href="http://web.emn.fr/x-info/atlanmod/">AtlanMod</a> research team, which is part of the [LS2N](https://ls2n.fr) research laboratory.
 			
