@@ -6,12 +6,16 @@ permalink: /teaching/
 
 ## Software Testing
 
-- [Software Testing Course](https://sunye.github.io/testing-courseware)
+- [Software Testing](https://sunye.github.io/software-testing)
 
 ## Model Driven Engineering
 
-- [EMF](https://sunye.github.io/emf-courseware)
-- [OCL](https://sunye.github.io/ocl)
-- [ATL](https://sunye.github.io/atl-courseware)
+- [MDE](https://sunye.github.io/mde)
 
-## Software Engineering
+## Software Construction
+
+- [Software Construction and Evolution](https://sunye.github.io/software-construction)
+
+## Software Development
+
+- [Introduction to Software Development](https://sunye.github.io/software-development)
