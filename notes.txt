@@ -1,0 +1,5 @@
+# install packages:
+bundle install
+
+# Launch server:
+ bundle exec jekyll serve 
